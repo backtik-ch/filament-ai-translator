@@ -46,7 +46,7 @@ const defaultOptions = {
 compile({
     ...defaultOptions,
     entryPoints: ['./resources/js/index.js'],
-    outfile: './resources/dist/filament-ai-translator.js',
+    outfile: './resources/dist/filament-translatable.js',
 }).then(() => {
-    console.log(`Build completed for filament-ai-translator.js`)
+    console.log(`Build completed for filament-translatable.js`)
 })

@@ -1,12 +1,12 @@
 <?php
 
-namespace Backtik\FilamentAiTranslator;
+namespace Backtik\FilamentTranslatable;
 
 use Closure;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class FilamentAiTranslatorPlugin implements Plugin
+class FilamentTranslatablePlugin implements Plugin
 {
     protected array | Closure | null $languages = null;
 
@@ -18,7 +18,7 @@ class FilamentAiTranslatorPlugin implements Plugin
 
     public function getId(): string
     {
-        return 'filament-ai-translator';
+        return 'filament-translatable';
     }
 
     public function register(Panel $panel): void
@@ -29,19 +29,19 @@ class FilamentAiTranslatorPlugin implements Plugin
     public function boot(Panel $panel): void
     {
         if ($this->languages !== null) {
-            config()->set('ai-translator.languages', value($this->languages));
+            config()->set('filament-translatable.languages', value($this->languages));
         }
 
         if ($this->sourceLocale !== null) {
-            config()->set('ai-translator.source_locale', value($this->sourceLocale));
+            config()->set('filament-translatable.source_locale', value($this->sourceLocale));
         }
 
         if ($this->aiProvider !== null) {
-            config()->set('ai-translator.ai.provider', value($this->aiProvider));
+            config()->set('filament-translatable.ai.provider', value($this->aiProvider));
         }
 
         if ($this->aiModel !== null) {
-            config()->set('ai-translator.ai.model', value($this->aiModel));
+            config()->set('filament-translatable.ai.model', value($this->aiModel));
         }
     }
 

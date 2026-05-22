@@ -1,13 +1,13 @@
 <?php
 
-namespace Backtik\FilamentAiTranslator\Infolists\Components;
+namespace Backtik\FilamentTranslatable\Infolists\Components;
 
 use Closure;
 use Filament\Infolists\Components\Entry;
 
 class TranslatableEntry extends Entry
 {
-    protected string $view = 'filament-ai-translator::infolists.components.translatable-entry';
+    protected string $view = 'filament-translatable::infolists.components.translatable-entry';
 
     protected bool | Closure $isModal = false;
 
@@ -25,12 +25,12 @@ class TranslatableEntry extends Entry
 
     public function getSourceLocale(): string
     {
-        return config('ai-translator.source_locale', 'fr');
+        return config('filament-translatable.source_locale', 'fr');
     }
 
     public function getLanguages(): array
     {
-        return config('ai-translator.languages', []);
+        return config('filament-translatable.languages', []);
     }
 
     public function getTranslations(): array

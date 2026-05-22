@@ -1,5 +1,5 @@
 {
-    "name": "backtik-ch/filament-ai-translator",
+    "name": "backtik-ch/filament-translatable",
     "description": "This packages provides a simple way to translate Filament texts with AI (or manually). It is to be used in combination with Spatie's Laravel Translatable package.",
     "keywords": [
         "backtik-ch",
@@ -7,12 +7,12 @@
         "filamentphp",
         "filament",
         "filament-plugin",
-        "filament-ai-translator"
+        "filament-translatable"
     ],
-    "homepage": "https://github.com/backtik-ch/filament-ai-translator",
+    "homepage": "https://github.com/backtik-ch/filament-translatable",
     "support": {
-        "issues": "https://github.com/backtik-ch/filament-ai-translator/issues",
-        "source": "https://github.com/backtik-ch/filament-ai-translator"
+        "issues": "https://github.com/backtik-ch/filament-translatable/issues",
+        "source": "https://github.com/backtik-ch/filament-translatable"
     },
     "license": "MIT",
     "authors": [
@@ -40,12 +40,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Backtik\\FilamentAiTranslator\\": "src/"
+            "Backtik\\FilamentTranslatable\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Backtik\\FilamentAiTranslator\\Tests\\": "tests/"
+            "Backtik\\FilamentTranslatable\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -58,7 +58,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Backtik\\FilamentAiTranslator\\FilamentAiTranslatorServiceProvider"
+                "Backtik\\FilamentTranslatable\\FilamentTranslatableServiceProvider"
             ]
         }
     },

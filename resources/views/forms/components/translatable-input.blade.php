@@ -2,7 +2,7 @@
     <div style="display: flex; align-items: center; gap: 0.75rem;">
         <div style="flex: 1; min-width: 0;">
             <x-filament::input.wrapper :prefix="strtoupper($getSourceLocale())">
-                <x-filament::input type="text" readonly disabled :value="$getDisplayValue()" :placeholder="__('filament-ai-translator::translations.placeholder')" />
+                <x-filament::input type="text" readonly disabled :value="$getDisplayValue()" :placeholder="__('filament-translatable::translations.placeholder')" />
             </x-filament::input.wrapper>
         </div>
 

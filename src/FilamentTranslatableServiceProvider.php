@@ -1,20 +1,20 @@
 <?php
 
-namespace Backtik\FilamentAiTranslator;
+namespace Backtik\FilamentTranslatable;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class FilamentAiTranslatorServiceProvider extends PackageServiceProvider
+class FilamentTranslatableServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'filament-ai-translator';
+    public static string $name = 'filament-translatable';
 
-    public static string $viewNamespace = 'filament-ai-translator';
+    public static string $viewNamespace = 'filament-translatable';
 
     public function configurePackage(Package $package): void
     {
         $package->name(static::$name)
-            ->hasConfigFile('ai-translator')
+            ->hasConfigFile('filament-translatable')
             ->hasViews(static::$viewNamespace)
             ->hasTranslations();
     }

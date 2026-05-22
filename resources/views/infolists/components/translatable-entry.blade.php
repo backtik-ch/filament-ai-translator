@@ -17,12 +17,12 @@
                     <x-filament::modal width="4xl">
                         <x-slot name="trigger">
                             <x-filament::link size="sm" tag="button" icon="heroicon-o-language">
-                                {{ __('filament-ai-translator::translations.view_translations') }}
+                                {{ __('filament-translatable::translations.view_translations') }}
                             </x-filament::link>
                         </x-slot>
 
                         <x-slot name="heading">
-                            {{ __('filament-ai-translator::translations.modal_heading') }}
+                            {{ __('filament-translatable::translations.modal_heading') }}
                         </x-slot>
 
                         <div style="display: flex; flex-direction: column; gap: 0.75rem;">
@@ -84,7 +84,7 @@
                 <div style="display: flex; justify-content: flex-start;">
                     <x-filament::link size="sm" x-on:click="expanded = !expanded" tag="button">
                         <span
-                            x-text="expanded ? '{{ __('filament-ai-translator::translations.show_less') }}' : '{{ __('filament-ai-translator::translations.show_more', ['count' => count($remainingLanguages)]) }}'"></span>
+                            x-text="expanded ? '{{ __('filament-translatable::translations.show_less') }}' : '{{ __('filament-translatable::translations.show_more', ['count' => count($remainingLanguages)]) }}'"></span>
                     </x-filament::link>
                 </div>
             @endif

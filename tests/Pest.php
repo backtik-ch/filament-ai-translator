@@ -1,5 +1,5 @@
 <?php
 
-use Backtik\FilamentAiTranslator\Tests\TestCase;
+use Backtik\FilamentTranslatable\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

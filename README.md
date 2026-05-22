@@ -1,7 +1,7 @@
-# Filament AI Translator
+# Filament Translatable
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/backtik-ch/filament-ai-translator.svg?style=flat-square)](https://packagist.org/packages/backtik-ch/filament-ai-translator)
-[![Total Downloads](https://img.shields.io/packagist/dt/backtik-ch/filament-ai-translator.svg?style=flat-square)](https://packagist.org/packages/backtik-ch/filament-ai-translator)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/backtik-ch/filament-translatable.svg?style=flat-square)](https://packagist.org/packages/backtik-ch/filament-translatable)
+[![Total Downloads](https://img.shields.io/packagist/dt/backtik-ch/filament-translatable.svg?style=flat-square)](https://packagist.org/packages/backtik-ch/filament-translatable)
 
 A Filament 4 plugin that provides translatable form fields and infolist entries with AI-powered translation generation via [laravel/ai](https://github.com/laravel/ai). Designed to work with [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable).
 
@@ -24,27 +24,27 @@ A Filament 4 plugin that provides translatable form fields and infolist entries 
 ## Installation
 
 ```bash
-composer require backtik-ch/filament-ai-translator
+composer require backtik-ch/filament-translatable
 ```
 
 Publish the config file:
 
 ```bash
-php artisan vendor:publish --tag="filament-ai-translator-config"
+php artisan vendor:publish --tag="filament-translatable-config"
 ```
 
 ## Configuration
 
 ```php
-// config/ai-translator.php
+// config/filament-translatable.php
 
 return [
     'languages' => ['fr', 'de', 'it', 'en'],
     'source_locale' => 'fr',
     'ai' => [
-        'enabled' => env('AI_TRANSLATOR_ENABLED', true),
-        'provider' => env('AI_TRANSLATOR_PROVIDER', 'anthropic'),
-        'model' => env('AI_TRANSLATOR_MODEL', 'claude-haiku-4-5-20251001'),
+        'enabled' => env('FILAMENT_TRANSLATABLE_AI_ENABLED', true),
+        'provider' => env('FILAMENT_TRANSLATABLE_AI_PROVIDER', 'anthropic'),
+        'model' => env('FILAMENT_TRANSLATABLE_AI_MODEL', 'claude-haiku-4-5-20251001'),
         'prompt' => 'Translate the following text from :source_language to :target_language. Return only the translation, nothing else.',
     ],
 ];
@@ -62,7 +62,7 @@ ANTHROPIC_API_KEY=sk-ant-...
 OPENAI_API_KEY=sk-...
 
 # Disable AI (keep manual editing only)
-AI_TRANSLATOR_ENABLED=false
+FILAMENT_TRANSLATABLE_AI_ENABLED=false
 ```
 
 See the [laravel/ai documentation](https://github.com/laravel/ai) for all supported providers.
@@ -72,13 +72,13 @@ See the [laravel/ai documentation](https://github.com/laravel/ai) for all suppor
 Register the plugin in your `PanelProvider`:
 
 ```php
-use Backtik\FilamentAiTranslator\FilamentAiTranslatorPlugin;
+use Backtik\FilamentTranslatable\FilamentTranslatablePlugin;
 
 public function panel(Panel $panel): Panel
 {
     return $panel
         ->plugin(
-            FilamentAiTranslatorPlugin::make()
+            FilamentTranslatablePlugin::make()
                 ->languages(['fr', 'de', 'en'])
                 ->sourceLocale('fr')
                 ->aiProvider('openai')
@@ -109,7 +109,7 @@ class Post extends Model
 ### Form Field
 
 ```php
-use Backtik\FilamentAiTranslator\Forms\Components\TranslatableInput;
+use Backtik\FilamentTranslatable\Forms\Components\TranslatableInput;
 
 // Simple text input (short content like titles)
 TranslatableInput::make('title')
@@ -130,7 +130,7 @@ The field displays the source locale value as a readonly preview. Clicking the t
 ### Infolist Entry
 
 ```php
-use Backtik\FilamentAiTranslator\Infolists\Components\TranslatableEntry;
+use Backtik\FilamentTranslatable\Infolists\Components\TranslatableEntry;
 
 // Inline mode (default) — shows all translations with expand/collapse
 TranslatableEntry::make('title')

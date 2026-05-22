@@ -1,8 +1,8 @@
 <?php
 
-namespace Backtik\FilamentAiTranslator\Tests;
+namespace Backtik\FilamentTranslatable\Tests;
 
-use Backtik\FilamentAiTranslator\FilamentAiTranslatorServiceProvider;
+use Backtik\FilamentTranslatable\FilamentTranslatableServiceProvider;
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
 use Filament\Actions\ActionsServiceProvider;
@@ -30,7 +30,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Backtik\\FilamentAiTranslator\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'Backtik\\FilamentTranslatable\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
@@ -49,7 +49,7 @@ class TestCase extends Orchestra
             SupportServiceProvider::class,
             TablesServiceProvider::class,
             WidgetsServiceProvider::class,
-            FilamentAiTranslatorServiceProvider::class,
+            FilamentTranslatableServiceProvider::class,
         ];
 
         sort($providers);

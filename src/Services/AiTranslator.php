@@ -1,6 +1,6 @@
 <?php
 
-namespace Backtik\FilamentAiTranslator\Services;
+namespace Backtik\FilamentTranslatable\Services;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 
@@ -17,14 +17,14 @@ class AiTranslator
         $prompt = str_replace(
             [':source_language', ':target_language'],
             [$sourceLocale, $targetLocale],
-            config('ai-translator.ai.prompt'),
+            config('filament-translatable.ai.prompt'),
         );
 
         $response = agent(instructions: $prompt)
             ->prompt(
                 prompt: $text,
-                provider: config('ai-translator.ai.provider'),
-                model: config('ai-translator.ai.model'),
+                provider: config('filament-translatable.ai.provider'),
+                model: config('filament-translatable.ai.model'),
             );
 
         return trim((string) $response);
@@ -57,8 +57,8 @@ class AiTranslator
                 ->all(),
         )->prompt(
             prompt: $text,
-            provider: config('ai-translator.ai.provider'),
-            model: config('ai-translator.ai.model'),
+            provider: config('filament-translatable.ai.provider'),
+            model: config('filament-translatable.ai.model'),
         );
 
         $translations = [];
