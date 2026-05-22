@@ -14,7 +14,7 @@
 
             @if (count($languages) > 1)
                 <div style="margin-top: 0.375rem;">
-                    <x-filament::modal width="xl">
+                    <x-filament::modal width="4xl">
                         <x-slot name="trigger">
                             <x-filament::link size="sm" tag="button" icon="heroicon-o-language">
                                 {{ __('filament-ai-translator::translations.view_translations') }}
