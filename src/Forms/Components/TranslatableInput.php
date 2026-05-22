@@ -10,6 +10,10 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Actions as SchemaActions;
+use Filament\Schemas\Components\Flex;
+use Filament\Schemas\Components\Section;
+use Illuminate\Support\HtmlString;
 
 class TranslatableInput extends Field
 {
@@ -100,68 +104,80 @@ class TranslatableInput extends Field
             ->schema(function (): array {
                 $fields = [];
 
-                $fields[] = Select::make('source_locale')
-                    ->label(__('filament-ai-translator::translations.source_language'))
-                    ->options(array_combine($this->getLanguages(), array_map('strtoupper', $this->getLanguages())))
-                    ->default($this->getSourceLocale())
-                    ->required();
-
                 foreach ($this->getLanguages() as $locale) {
+                    $prefix = new HtmlString('<span style="font-family: monospace; display: inline-block; width: 1.5rem; text-align: center;">' . strtoupper($locale) . '</span>');
+
                     $field = $this->getInputType() === 'textarea'
-                        ? Textarea::make($locale)->label(strtoupper($locale))->rows(3)
-                        : TextInput::make($locale)->label(strtoupper($locale));
+                        ? Textarea::make($locale)->hiddenLabel()->prefix($prefix)->rows(3)
+                        : TextInput::make($locale)->hiddenLabel()->prefix($prefix);
 
                     $fields[] = $field;
                 }
 
+                if (config('ai-translator.ai.enabled', true)) {
+                    $fields[] = Section::make(__('filament-ai-translator::translations.ai_section'))
+                        ->secondary()
+                        ->description(__('filament-ai-translator::translations.ai_section_description'))
+                        ->compact()
+                        ->schema([
+                            Flex::make([
+                                Select::make('source_locale')
+                                    ->label(__('filament-ai-translator::translations.source_language'))
+                                    ->options(array_combine($this->getLanguages(), array_map('strtoupper', $this->getLanguages())))
+                                    ->default($this->getSourceLocale())
+                                    ->required(),
+                                SchemaActions::make([
+                                    Action::make('generate')
+                                        ->label(__('filament-ai-translator::translations.generate'))
+                                        ->icon('heroicon-o-sparkles')
+                                        ->color('warning')
+                                        ->action(function (Action $action) {
+                                            $translatableInput = $this;
+                                            $livewire = $action->getLivewire();
+                                            $data = $livewire->mountedActions[0]['data'] ?? [];
+
+                                            $sourceLocale = $data['source_locale'] ?? $translatableInput->getSourceLocale();
+                                            $sourceText = $data[$sourceLocale] ?? '';
+
+                                            if (trim($sourceText) === '') {
+                                                Notification::make()
+                                                    ->title(__('filament-ai-translator::translations.empty_source'))
+                                                    ->danger()
+                                                    ->send();
+
+                                                return;
+                                            }
+
+                                            $targetLocales = array_filter(
+                                                $translatableInput->getLanguages(),
+                                                fn (string $locale) => $locale !== $sourceLocale,
+                                            );
+
+                                            try {
+                                                $translator = app(AiTranslator::class);
+                                                $translations = $translator->translateToAll($sourceText, $sourceLocale, $targetLocales);
+
+                                                $formData = $data;
+                                                foreach ($translations as $locale => $translation) {
+                                                    $formData[$locale] = $translation;
+                                                }
+
+                                                $livewire->mountedActions[0]['data'] = $formData;
+                                            } catch (\Throwable $e) {
+                                                Notification::make()
+                                                    ->title(__('filament-ai-translator::translations.error'))
+                                                    ->body($e->getMessage())
+                                                    ->danger()
+                                                    ->send();
+                                            }
+                                        }),
+                                ])->grow(false),
+                            ])->verticallyAlignEnd(),
+                        ]);
+                }
+
                 return $fields;
             })
-            ->extraModalFooterActions(fn (): array => [
-                Action::make('generate')
-                    ->label(__('filament-ai-translator::translations.generate'))
-                    ->icon('heroicon-o-sparkles')
-                    ->color('warning')
-                    ->action(function (Action $action, self $component) {
-                        $livewire = $action->getLivewire();
-                        $parentIndex = $action->getParentAction()->getNestingIndex();
-                        $data = $livewire->mountedActions[$parentIndex]['data'] ?? [];
-
-                        $sourceLocale = $data['source_locale'] ?? $component->getSourceLocale();
-                        $sourceText = $data[$sourceLocale] ?? '';
-
-                        if (trim($sourceText) === '') {
-                            Notification::make()
-                                ->title(__('filament-ai-translator::translations.empty_source'))
-                                ->danger()
-                                ->send();
-
-                            return;
-                        }
-
-                        $targetLocales = array_filter(
-                            $component->getLanguages(),
-                            fn (string $locale) => $locale !== $sourceLocale,
-                        );
-
-                        try {
-                            $translator = app(AiTranslator::class);
-                            $translations = $translator->translateToAll($sourceText, $sourceLocale, $targetLocales);
-
-                            $formData = $data;
-                            foreach ($translations as $locale => $translation) {
-                                $formData[$locale] = $translation;
-                            }
-
-                            $livewire->mountedActions[$parentIndex]['data'] = $formData;
-                        } catch (\Throwable $e) {
-                            Notification::make()
-                                ->title(__('filament-ai-translator::translations.error'))
-                                ->body($e->getMessage())
-                                ->danger()
-                                ->send();
-                        }
-                    }),
-            ])
             ->action(function (array $data, self $component): void {
                 $state = [];
 

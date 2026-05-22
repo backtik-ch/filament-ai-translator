@@ -2,6 +2,8 @@
 
 namespace Backtik\FilamentAiTranslator\Services;
 
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+
 use function Laravel\Ai\agent;
 
 class AiTranslator
@@ -30,16 +32,38 @@ class AiTranslator
 
     public function translateToAll(string $text, string $sourceLocale, array $targetLocales): array
     {
+        if (trim($text) === '') {
+            return array_fill_keys($targetLocales, '');
+        }
+
+        $targetLocales = array_values(array_filter(
+            $targetLocales,
+            fn (string $locale) => $locale !== $sourceLocale,
+        ));
+
+        if (empty($targetLocales)) {
+            return [$sourceLocale => $text];
+        }
+
+        $languages = implode(', ', $targetLocales);
+        $instructions = "Translate the following text from {$sourceLocale} to each of these languages: {$languages}. Return only the translations.";
+
+        $response = agent(
+            instructions: $instructions,
+            schema: fn (JsonSchema $schema) => collect($targetLocales)
+                ->mapWithKeys(fn (string $locale) => [
+                    $locale => $schema->string()->description("Translation in {$locale}")->required(),
+                ])
+                ->all(),
+        )->prompt(
+            prompt: $text,
+            provider: config('ai-translator.ai.provider'),
+            model: config('ai-translator.ai.model'),
+        );
+
         $translations = [];
-
         foreach ($targetLocales as $locale) {
-            if ($locale === $sourceLocale) {
-                $translations[$locale] = $text;
-
-                continue;
-            }
-
-            $translations[$locale] = $this->translate($text, $sourceLocale, $locale);
+            $translations[$locale] = $response[$locale] ?? '';
         }
 
         return $translations;

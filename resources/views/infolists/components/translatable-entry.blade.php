@@ -2,19 +2,46 @@
     @php
         $translations = $getTranslations();
         $languages = $getLanguages();
+        $firstLocale = $languages[0] ?? null;
+        $remainingLanguages = array_slice($languages, 1);
     @endphp
 
-    <div class="flex flex-col gap-1.5">
-        @foreach ($languages as $locale)
-            <div class="flex items-center gap-2">
-                <span
-                    class="inline-flex items-center rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 dark:bg-gray-700 dark:text-gray-300 dark:ring-gray-400/20">
-                    {{ strtoupper($locale) }}
-                </span>
-                <span class="text-sm text-gray-950 dark:text-white">
-                    {{ $translations[$locale] ?? '—' }}
+    <div x-data="{ expanded: false }" style="display: flex; flex-direction: column; gap: 0.375rem;">
+        @if ($firstLocale)
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <x-filament::badge size="sm" color="gray">
+                    <span
+                        style="font-family: monospace; display: inline-block; text-align: center;">{{ strtoupper($firstLocale) }}</span>
+                </x-filament::badge>
+                <span style="font-size: 0.875rem;">
+                    {{ $translations[$firstLocale] ?? '—' }}
                 </span>
             </div>
-        @endforeach
+        @endif
+
+        @if (count($remainingLanguages))
+            <div x-show="expanded" x-collapse>
+                <div style="display: flex; flex-direction: column; gap: 0.375rem;">
+                    @foreach ($remainingLanguages as $locale)
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <x-filament::badge size="sm" color="gray">
+                                <span
+                                    style="font-family: monospace; display: inline-block; text-align: center;">{{ strtoupper($locale) }}</span>
+                            </x-filament::badge>
+                            <span style="font-size: 0.875rem;">
+                                {{ $translations[$locale] ?? '—' }}
+                            </span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-start;">
+                <x-filament::link size="sm" x-on:click="expanded = !expanded" tag="button">
+                    <span
+                        x-text="expanded ? '{{ __('filament-ai-translator::translations.show_less') }}' : '{{ __('filament-ai-translator::translations.show_more', ['count' => count($remainingLanguages)]) }}'"></span>
+                </x-filament::link>
+            </div>
+        @endif
     </div>
 </x-dynamic-component>
