@@ -9,7 +9,7 @@ A Filament 4 & 5 plugin that provides translatable form fields and infolist entr
 
 ## Features
 
-- **TranslatableInput** — A form field that displays the source locale value with a button to open a translation modal
+- **TranslatableInput** — A form field with two display modes: modal (default) or inline
 - **TranslatableEntry** — An infolist entry with two display modes: inline (expandable) or modal
 - **AI Translation** — Generate all translations in a single API call using structured output
 - **Configurable** — Set languages, source locale, AI provider/model globally or per-panel
@@ -116,7 +116,15 @@ TranslatableInput::make('title')
 
 // Textarea for longer content
 TranslatableInput::make('description')->inputType('textarea')
+
+// Inline mode — all locale fields rendered directly in the form
+TranslatableInput::make('title')->inline()
+
+// Inline textarea
+TranslatableInput::make('description')->inline()->inputType('textarea')
 ```
+
+#### Modal mode (default)
 
 The field displays the source locale value as a readonly preview. Clicking the translate button opens a modal where you can:
 
@@ -126,6 +134,12 @@ The field displays the source locale value as a readonly preview. Clicking the t
 
 <!-- ![Form field](screenshots/form-field.png) -->
 <!-- ![Translation modal](screenshots/translation-modal.png) -->
+
+#### Inline mode
+
+All locale fields are rendered directly in the form without requiring a modal. The AI generation section is also displayed inline. Best suited for forms where you want all translations visible at a glance.
+
+<!-- ![Inline form field](screenshots/form-inline.png) -->
 
 ### Infolist Entry
 
@@ -137,6 +151,10 @@ TranslatableEntry::make('title')
 
 // Modal mode — shows source text, click to view all translations in a modal
 TranslatableEntry::make('description')->modal()
+
+// Truncate text to a specific number of lines
+TranslatableEntry::make('description')->lineClamp(3)
+TranslatableEntry::make('description')->modal()->lineClamp(2)
 ```
 
 #### Inline mode (default)
