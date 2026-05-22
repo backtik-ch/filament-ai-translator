@@ -23,8 +23,9 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "filament/filament": "^5.0",
+        "php": "^8.3",
+        "filament/filament": "^4.0",
+        "laravel/ai": "^0.7",
         "spatie/laravel-package-tools": "^1.15.0"
     },
     "require-dev": {
@@ -39,8 +40,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Backtik\\FilamentAiTranslator\\": "src/",
-            "Backtik\\FilamentAiTranslator\\Database\\Factories\\": "database/factories/"
+            "Backtik\\FilamentAiTranslator\\": "src/"
         }
     },
     "autoload-dev": {
@@ -59,10 +59,7 @@
         "laravel": {
             "providers": [
                 "Backtik\\FilamentAiTranslator\\FilamentAiTranslatorServiceProvider"
-            ],
-            "aliases": {
-                "FilamentAiTranslator": "Backtik\\FilamentAiTranslator\\Facades\\FilamentAiTranslator"
-            }
+            ]
         }
     },
     "config": {
