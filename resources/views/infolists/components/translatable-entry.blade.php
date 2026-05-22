@@ -8,9 +8,16 @@
         $remainingLanguages = array_slice($languages, 1);
     @endphp
 
+    @php
+        $lineClamp = $getLineClamp();
+        $clampStyle = $lineClamp
+            ? "display: -webkit-box; -webkit-line-clamp: {$lineClamp}; -webkit-box-orient: vertical; overflow: hidden;"
+            : 'white-space: pre-line;';
+    @endphp
+
     @if ($isModal)
         <div>
-            <div style="font-size: 0.875rem; white-space: pre-line;">{{ $translations[$sourceLocale] ?? '—' }}</div>
+            <div style="font-size: 0.875rem; {{ $clampStyle }}">{{ $translations[$sourceLocale] ?? '—' }}</div>
 
             @if (count($languages) > 1)
                 <div style="margin-top: 0.375rem;">
@@ -57,7 +64,7 @@
                         </x-filament::badge>
                     </div>
                     <span
-                        style="font-size: 0.875rem; white-space: pre-line;">{{ $translations[$firstLocale] ?? '—' }}</span>
+                        style="font-size: 0.875rem; {{ $clampStyle }}">{{ $translations[$firstLocale] ?? '—' }}</span>
                 </div>
             @endif
 
@@ -75,7 +82,7 @@
                                     </x-filament::badge>
                                 </div>
                                 <span
-                                    style="font-size: 0.875rem; white-space: pre-line;">{{ $translations[$locale] ?? '—' }}</span>
+                                    style="font-size: 0.875rem; {{ $clampStyle }}">{{ $translations[$locale] ?? '—' }}</span>
                             </div>
                         @endforeach
                     </div>

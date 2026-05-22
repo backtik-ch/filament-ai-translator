@@ -13,6 +13,8 @@ use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Actions as SchemaActions;
 use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Support\HtmlString;
 
 class TranslatableInput extends Field
@@ -131,13 +133,11 @@ class TranslatableInput extends Field
                                         ->label(__('filament-translatable::translations.generate'))
                                         ->icon('heroicon-o-sparkles')
                                         ->color('warning')
-                                        ->action(function (Action $action) {
+                                        ->action(function (Action $action, Get $get, Set $set) {
                                             $translatableInput = $this;
-                                            $livewire = $action->getLivewire();
-                                            $data = $livewire->mountedActions[0]['data'] ?? [];
 
-                                            $sourceLocale = $data['source_locale'] ?? $translatableInput->getSourceLocale();
-                                            $sourceText = $data[$sourceLocale] ?? '';
+                                            $sourceLocale = $get('source_locale') ?? $translatableInput->getSourceLocale();
+                                            $sourceText = $get($sourceLocale) ?? '';
 
                                             if (trim($sourceText) === '') {
                                                 Notification::make()
@@ -157,12 +157,9 @@ class TranslatableInput extends Field
                                                 $translator = app(AiTranslator::class);
                                                 $translations = $translator->translateToAll($sourceText, $sourceLocale, $targetLocales);
 
-                                                $formData = $data;
                                                 foreach ($translations as $locale => $translation) {
-                                                    $formData[$locale] = $translation;
+                                                    $set($locale, $translation);
                                                 }
-
-                                                $livewire->mountedActions[0]['data'] = $formData;
                                             } catch (\Throwable $e) {
                                                 Notification::make()
                                                     ->title(__('filament-translatable::translations.error'))

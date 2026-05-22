@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/backtik-ch/filament-translatable.svg?style=flat-square)](https://packagist.org/packages/backtik-ch/filament-translatable)
 [![Total Downloads](https://img.shields.io/packagist/dt/backtik-ch/filament-translatable.svg?style=flat-square)](https://packagist.org/packages/backtik-ch/filament-translatable)
 
-A Filament 4 plugin that provides translatable form fields and infolist entries with AI-powered translation generation via [laravel/ai](https://github.com/laravel/ai). Designed to work with [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable).
+A Filament 4 & 5 plugin that provides translatable form fields and infolist entries with AI-powered translation generation via [laravel/ai](https://github.com/laravel/ai). Designed to work with [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable).
 
 <!-- ![Screenshot](screenshots/hero.png) -->
 

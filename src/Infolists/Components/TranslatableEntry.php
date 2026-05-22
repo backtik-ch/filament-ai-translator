@@ -11,11 +11,25 @@ class TranslatableEntry extends Entry
 
     protected bool | Closure $isModal = false;
 
+    protected int | Closure | null $lineClamp = null;
+
     public function modal(bool | Closure $condition = true): static
     {
         $this->isModal = $condition;
 
         return $this;
+    }
+
+    public function lineClamp(int | Closure | null $lines): static
+    {
+        $this->lineClamp = $lines;
+
+        return $this;
+    }
+
+    public function getLineClamp(): ?int
+    {
+        return $this->evaluate($this->lineClamp);
     }
 
     public function isModal(): bool
