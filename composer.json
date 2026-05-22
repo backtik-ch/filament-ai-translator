@@ -1,6 +1,6 @@
 {
     "name": "backtik-ch/filament-ai-translator",
-    "description": "This is my package filament-ai-translator",
+    "description": "This packages provides a simple way to translate Filament texts with AI (or manually). It is to be used in combination with Spatie's Laravel Translatable package.",
     "keywords": [
         "backtik-ch",
         "laravel",
