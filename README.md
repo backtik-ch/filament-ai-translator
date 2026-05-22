@@ -19,7 +19,7 @@ A Filament 4 plugin that provides translatable form fields and infolist entries 
 
 - PHP ^8.3
 - Laravel ^12.0 | ^13.0
-- Filament ^4.0
+- Filament ^4.0 | ^5.0
 - laravel/ai ^0.7
 
 ## Installation
