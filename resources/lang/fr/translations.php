@@ -12,4 +12,5 @@ return [
     'ai_section_description' => 'Utilisez l\'IA pour générer des traductions pour les langues sélectionnées.',
     'show_more' => '+:count autres',
     'show_less' => 'Réduire',
+    'view_translations' => 'Voir les traductions',
 ];

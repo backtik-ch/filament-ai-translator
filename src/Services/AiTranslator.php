@@ -46,13 +46,13 @@ class AiTranslator
         }
 
         $languages = implode(', ', $targetLocales);
-        $instructions = "Translate the following text from {$sourceLocale} to each of these languages: {$languages}. Return only the translations.";
+        $instructions = "Translate the following text from {$sourceLocale} to each of these languages: {$languages}. Preserve the original formatting including line breaks (newlines). Return only the translations.";
 
         $response = agent(
             instructions: $instructions,
             schema: fn (JsonSchema $schema) => collect($targetLocales)
                 ->mapWithKeys(fn (string $locale) => [
-                    $locale => $schema->string()->description("Translation in {$locale}")->required(),
+                    $locale => $schema->string()->description("Translation in {$locale}. Preserve line breaks using newline characters.")->required(),
                 ])
                 ->all(),
         )->prompt(

@@ -108,7 +108,7 @@ class TranslatableInput extends Field
                     $prefix = new HtmlString('<span style="font-family: monospace; display: inline-block; width: 1.5rem; text-align: center;">' . strtoupper($locale) . '</span>');
 
                     $field = $this->getInputType() === 'textarea'
-                        ? Textarea::make($locale)->hiddenLabel()->prefix($prefix)->rows(3)
+                        ? Textarea::make($locale)->label(strtoupper($locale))->rows(3)
                         : TextInput::make($locale)->hiddenLabel()->prefix($prefix);
 
                     $fields[] = $field;
